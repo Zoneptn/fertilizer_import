@@ -57,6 +57,27 @@ if len(selected_formulas) >10:
 # -----------------------------
 filtered = df[df["Formula"].isin(selected_formulas)]
 
+# Create complete Formula × Year grid
+all_years = range(df["Year"].min(), df["Year"].max() + 1)
+
+plot_df = (
+    pd.MultiIndex.from_product(
+        [selected_formulas, all_years],
+        names=["Formula", "Year"]
+    )
+    .to_frame(index=False)
+)
+
+plot_df = plot_df.merge(
+    filtered,
+    on=["Formula", "Year"],
+    how="left"
+)
+
+plot_df["Import_Volume_TON"] = plot_df["Import_Volume_TON"].fillna(0)
+plot_df["Import_Value_THB"] = plot_df["Import_Value_THB"].fillna(0)
+plot_df["AVG_price_THB_per_TON"] = plot_df["AVG_price_THB_per_TON"].fillna(0)
+
 
 
 
