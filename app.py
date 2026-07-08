@@ -48,7 +48,7 @@ selected_formulas = st.sidebar.multiselect(
     default = [formula_list[0]]
 )
 
-if len(selected_formulas) >5:
+if len(selected_formulas) >10:
     st.warning("Please select at most 5 formulas for comparison.")
     st.stop()
     
