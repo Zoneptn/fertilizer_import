@@ -564,9 +564,7 @@ with left:
 with right:
 
     fig_decline = px.bar(
-        growth_negative.sort_values(
-    "Growth (%)"
-).head(10),
+        growth_df.tail(10),
         x="Growth (%)",
         y="Formula",
         orientation="h",
