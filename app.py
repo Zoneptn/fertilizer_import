@@ -184,10 +184,15 @@ st.plotly_chart(fig_price, use_container_width=True)
 # -----------------------------
 # Data Table
 # -----------------------------
-st.subheader("Data")
+st.subheader("Import Volume Table (TON)")
+
+volume_table = plot_df.pivot(
+    index="Year",
+    columns="Formula",
+    values="Import_Volume_TON"
+).fillna(0)
 
 st.dataframe(
-    filtered,
-    use_container_width=True,
-    hide_index=True
+    volume_table.style.format("{:,.0f}"),
+    use_container_width=True
 )
