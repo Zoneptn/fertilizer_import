@@ -297,4 +297,5 @@ with right:
 st.write(top_volume.dtypes)
 st.write(top_volume[["Formula", "Import_Volume_TON"]])
 st.write(top_value[["Formula", "Import_Value_THB"]])
+st.write(top_volume)
 
