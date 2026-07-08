@@ -202,13 +202,16 @@ st.dataframe(
 )
 
 
-### Top N
-
+# ==========================================================
+# Top Imported Fertilizer Formulas
+# ==========================================================
 
 st.divider()
 st.header("🏆 Top Imported Fertilizer Formulas")
 
-
+# -----------------------------
+# Controls
+# -----------------------------
 col1, col2 = st.columns(2)
 
 with col1:
@@ -225,75 +228,84 @@ with col2:
         value=10
     )
 
-top_df = df[df["Year"] == selected_year]
+# -----------------------------
+# Filter by Year
+# -----------------------------
+top_df = df[df["Year"] == selected_year].copy()
 
-left, right = st.columns(2)
+# Make sure Formula is text
+top_df["Formula"] = top_df["Formula"].astype(str)
 
+# -----------------------------
+# Prepare Data
+# -----------------------------
 top_volume = (
     top_df
-    .sort_values("Import_Volume_TON", ascending=False)
+    .sort_values(by="Import_Volume_TON", ascending=False)
     .head(top_n)
 )
-
-top_volume["Formula"] = top_volume["Formula"].astype(str)
-
-with left:
-
-    fig_volume = px.bar(
-        top_volume,
-        x="Import_Volume_TON",
-        y="Formula",
-        orientation="h",
-        title=f"Top {top_n} by Import Volume"
-    )
-
-    fig_volume.update_layout(
-        yaxis=dict(categoryorder="total ascending"),
-        height=600
-    )
-
-    fig_volume.update_traces(
-        texttemplate="%{text:,.0f}",
-        hovertemplate="<b>%{y}</b><br>Volume: %{x:,.0f} TON<extra></extra>"
-    )
-
-    st.plotly_chart(fig_volume, use_container_width=True)
-
 
 top_value = (
     top_df
-    .sort_values("Import_Value_THB", ascending=False)
+    .sort_values(by="Import_Value_THB", ascending=False)
     .head(top_n)
 )
 
-top_value["Formula"] = top_value["Formula"].astype(str)
+# -----------------------------
+# Charts
+# -----------------------------
+left, right = st.columns(2)
+
+# ======================================================
+# Top Import Volume
+# ======================================================
+
+with left:
+
+    fig_top_volume = px.bar(
+        data_frame=top_volume,
+        x="Import_Volume_TON",
+        y="Formula",
+        orientation="h",
+        title=f"Top {top_n} Import Volume ({selected_year})"
+    )
+
+    fig_top_volume.update_layout(
+        height=600,
+        yaxis_title="Formula",
+        xaxis_title="Import Volume (TON)",
+        yaxis=dict(autorange="reversed")
+    )
+
+    fig_top_volume.update_traces(
+        hovertemplate="<b>%{y}</b><br>Volume: %{x:,.0f} TON<extra></extra>"
+    )
+
+    st.plotly_chart(fig_top_volume, use_container_width=True)
+
+# ======================================================
+# Top Import Value
+# ======================================================
 
 with right:
 
-    fig_value = px.bar(
-        top_value,
+    fig_top_value = px.bar(
+        data_frame=top_value,
         x="Import_Value_THB",
         y="Formula",
         orientation="h",
-        title=f"Top {top_n} by Import Value"
+        title=f"Top {top_n} Import Value ({selected_year})"
     )
 
-    fig_value.update_layout(
-        yaxis=dict(categoryorder="total ascending"),
-        height=600
+    fig_top_value.update_layout(
+        height=600,
+        yaxis_title="Formula",
+        xaxis_title="Import Value (THB)",
+        yaxis=dict(autorange="reversed")
     )
 
-    fig_value.update_traces(
-        texttemplate="%{text:,.0f}",
+    fig_top_value.update_traces(
         hovertemplate="<b>%{y}</b><br>Value: %{x:,.0f} THB<extra></extra>"
     )
 
-    st.plotly_chart(fig_value, use_container_width=True)
-
-
-
-st.write(top_volume.dtypes)
-st.write(top_volume[["Formula", "Import_Volume_TON"]])
-st.write(top_value[["Formula", "Import_Value_THB"]])
-st.write(top_volume)
-
+    st.plotly_chart(fig_top_value, use_container_width=True)
