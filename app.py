@@ -281,6 +281,8 @@ with left:
         hovertemplate="<b>%{y}</b><br>Volume: %{x:,.0f} TON<extra></extra>"
     )
 
+    fig_top_volume.update_yaxes(type="category")
+
     st.plotly_chart(fig_top_volume, use_container_width=True)
 
 # ======================================================
@@ -307,6 +309,8 @@ with right:
     fig_top_value.update_traces(
         hovertemplate="<b>%{y}</b><br>Value: %{x:,.0f} THB<extra></extra>"
     )
+
+    fig_top_value.update_yaxes(type="category")
 
     st.plotly_chart(fig_top_value, use_container_width=True)
 
