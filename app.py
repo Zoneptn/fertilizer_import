@@ -209,71 +209,6 @@ st.dataframe(
 st.divider()
 st.header("🏆 Top Imported Fertilizer Formulas")
 
-# ----------------------------------------
-# Market Share Data
-# ----------------------------------------
-
-market_df = top_df.copy()
-
-market_df["Volume Share (%)"] = (
-    market_df["Import_Volume_TON"]
-    / market_df["Import_Volume_TON"].sum()
-    * 100
-)
-
-market_df["Value Share (%)"] = (
-    market_df["Import_Value_THB"]
-    / market_df["Import_Value_THB"].sum()
-    * 100
-)
-
-market_df = market_df.sort_values(
-    "Volume Share (%)",
-    ascending=False
-).head(top_n)
-
-left, right = st.columns(2)
-
-with left:
-
-    fig_market_volume = px.pie(
-        market_df,
-        names="Formula",
-        values="Volume Share (%)",
-        title=f"Top {top_n} Market Share by Volume"
-    )
-
-    fig_market_volume.update_traces(
-        textposition="inside",
-        textinfo="percent+label",
-        hovertemplate="<b>%{label}</b><br>%{percent}<br>Volume: %{value:.2f}%<extra></extra>"
-    )
-
-    st.plotly_chart(
-        fig_market_volume,
-        use_container_width=True
-    )
-
-
-with right:
-
-    fig_market_value = px.pie(
-        market_df,
-        names="Formula",
-        values="Value Share (%)",
-        title=f"Top {top_n} Market Share by Value"
-    )
-
-    fig_market_value.update_traces(
-        textposition="inside",
-        textinfo="percent+label",
-        hovertemplate="<b>%{label}</b><br>%{percent}<br>Value: %{value:.2f}%<extra></extra>"
-    )
-
-    st.plotly_chart(
-        fig_market_value,
-        use_container_width=True
-    )
 
 # -----------------------------
 # Controls
@@ -396,4 +331,75 @@ with right:
 
     st.plotly_chart(fig_top_value, use_container_width=True)
 
+
+
+
+st.divider()
+st.header("📊 Market Share Analysis")
+
+# ----------------------------------------
+# Market Share Data
+# ----------------------------------------
+
+market_df = top_df.copy()
+
+market_df["Volume Share (%)"] = (
+    market_df["Import_Volume_TON"]
+    / market_df["Import_Volume_TON"].sum()
+    * 100
+)
+
+market_df["Value Share (%)"] = (
+    market_df["Import_Value_THB"]
+    / market_df["Import_Value_THB"].sum()
+    * 100
+)
+
+market_df = market_df.sort_values(
+    "Volume Share (%)",
+    ascending=False
+).head(top_n)
+
+left, right = st.columns(2)
+
+with left:
+
+    fig_market_volume = px.pie(
+        market_df,
+        names="Formula",
+        values="Volume Share (%)",
+        title=f"Top {top_n} Market Share by Volume"
+    )
+
+    fig_market_volume.update_traces(
+        textposition="inside",
+        textinfo="percent+label",
+        hovertemplate="<b>%{label}</b><br>%{percent}<br>Volume: %{value:.2f}%<extra></extra>"
+    )
+
+    st.plotly_chart(
+        fig_market_volume,
+        use_container_width=True
+    )
+
+
+with right:
+
+    fig_market_value = px.pie(
+        market_df,
+        names="Formula",
+        values="Value Share (%)",
+        title=f"Top {top_n} Market Share by Value"
+    )
+
+    fig_market_value.update_traces(
+        textposition="inside",
+        textinfo="percent+label",
+        hovertemplate="<b>%{label}</b><br>%{percent}<br>Value: %{value:.2f}%<extra></extra>"
+    )
+
+    st.plotly_chart(
+        fig_market_value,
+        use_container_width=True
+    )
 
