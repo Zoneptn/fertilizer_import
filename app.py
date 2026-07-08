@@ -116,7 +116,7 @@ st.plotly_chart(fig_volume, use_container_width=True)
 # Import Value Trend
 # =============================
 fig_value = px.line(
-    filtered,,
+    filtered,
     x="Year",
     y="Import_Value_THB",
     markers=True,
