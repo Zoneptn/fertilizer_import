@@ -235,6 +235,8 @@ top_volume = (
     .head(top_n)
 )
 
+top_volume["Formula"] = top_volume["Formula"].astype(str)
+
 with left:
 
     fig_volume = px.bar(
@@ -264,6 +266,8 @@ top_value = (
     .sort_values("Import_Value_THB", ascending=False)
     .head(top_n)
 )
+
+top_value["Formula"] = top_value["Formula"].astype(str)
 
 with right:
 
