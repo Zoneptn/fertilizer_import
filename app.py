@@ -521,6 +521,13 @@ growth_df = growth_df.sort_values(
 )
 
 # -----------------------------
+# Split into Growth and Decline
+# -----------------------------
+growth_positive = growth_df[growth_df["Growth (%)"] > 0]
+
+growth_negative = growth_df[growth_df["Growth (%)"] < 0]
+
+# -----------------------------
 # Charts
 # -----------------------------
 left, right = st.columns(2)
@@ -528,7 +535,7 @@ left, right = st.columns(2)
 with left:
 
     fig_growth = px.bar(
-        growth_df.head(10),
+        growth_positive.head(10),
         x="Growth (%)",
         y="Formula",
         orientation="h",
@@ -557,7 +564,9 @@ with left:
 with right:
 
     fig_decline = px.bar(
-        growth_df.tail(10),
+        growth_negative.sort_values(
+    "Growth (%)"
+).head(10),
         x="Growth (%)",
         y="Formula",
         orientation="h",
