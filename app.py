@@ -212,6 +212,13 @@ st.header("🏆 Top Imported Fertilizer Formulas")
 # -----------------------------
 # Controls
 # -----------------------------
+analysis_type = st.radio(
+    "Analysis",
+    ["All Years", "Selected Year"],
+    horizontal=True
+)
+
+
 col1, col2 = st.columns(2)
 
 with col1:
@@ -231,7 +238,19 @@ with col2:
 # -----------------------------
 # Filter by Year
 # -----------------------------
-top_df = df[df["Year"] == selected_year].copy()
+if analysis_type == "Selected Year":
+
+    top_df = df[df["Year"] == selected_year].copy()
+
+else:
+
+    top_df = (
+        df.groupby("Formula", as_index=False)
+        .agg({
+            "Import_Volume_TON": "sum",
+            "Import_Value_THB": "sum"
+        })
+    )
 
 # Make sure Formula is text
 top_df["Formula"] = top_df["Formula"].astype(str)
@@ -267,7 +286,7 @@ with left:
         x="Import_Volume_TON",
         y="Formula",
         orientation="h",
-        title=f"Top {top_n} Import Volume ({selected_year})"
+        title=f"Top {top_n} Import Volume"
     )
 
     fig_top_volume.update_layout(
@@ -296,7 +315,7 @@ with right:
         x="Import_Value_THB",
         y="Formula",
         orientation="h",
-        title=f"Top {top_n} Import Value ({selected_year})"
+        title=f"Top {top_n} Import Value"
     )
 
     fig_top_value.update_layout(
@@ -314,5 +333,4 @@ with right:
 
     st.plotly_chart(fig_top_value, use_container_width=True)
 
-st.write(plotly.__version__)
-st.write(top_volume.head())
+
