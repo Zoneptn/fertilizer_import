@@ -140,6 +140,7 @@ fig_price.update_layout(
 )
 
 fig_price.update_traces(
+    connnectgaps= False,
     hovertemplate="<b>Year:</b> %{x}<br><b>Price:</b> %{y:,.2f} THB / TON<extra></extra>"
 )
 
