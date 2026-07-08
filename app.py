@@ -197,6 +197,10 @@ st.dataframe(
     use_container_width=True
 )
 
+
+### Top N
+
+
 st.divider()
 st.header("🏆 Top Imported Fertilizer Formulas")
 
@@ -280,4 +284,6 @@ with right:
 
     st.plotly_chart(fig_value, use_container_width=True)
 
+
+st.write(df["Formula"].head(10))
 
