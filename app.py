@@ -1,4 +1,4 @@
-import streamlit as st
+oimport streamlit k, as st
 import pandas as pd
 import plotly.express as px
 import numpy as np
