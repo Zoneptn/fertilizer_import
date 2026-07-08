@@ -309,3 +309,6 @@ with right:
     )
 
     st.plotly_chart(fig_top_value, use_container_width=True)
+
+st.write(plotly.__version__)
+st.write(top_volume.head())
