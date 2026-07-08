@@ -30,9 +30,13 @@ def load_data():
     # Sort by year
     df = df.sort_values("Year")
 
+    # force formulat to be string 
+    df["Formula"] = df["Formula"].astype(str)
+
     return df
 
 df = load_data()
+
 
 
 # -----------------------------
