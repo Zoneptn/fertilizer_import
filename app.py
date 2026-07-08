@@ -1,4 +1,4 @@
-oimport streamlit k, as st
+import streamlit as st
 import pandas as pd
 import plotly.express as px
 import numpy as np
@@ -403,3 +403,181 @@ with right:
         use_container_width=True
     )
 
+
+# -----------------------------
+# Year-over-Year-Growth
+# -----------------------------
+st.divider()
+st.header("📈 Year-over-Year Growth")
+
+# -----------------------------
+# Controls
+# -----------------------------
+col1, col2 = st.columns(2)
+
+with col1:
+
+    yoy_year = st.selectbox(
+        "Compare Year",
+        sorted(df["Year"].unique())[1:],      # starts from second year
+        index=len(sorted(df["Year"].unique()))-2
+    )
+
+with col2:
+
+    growth_metric = st.selectbox(
+        "Metric",
+        ["Import Volume", "Import Value"]
+    )
+
+# -----------------------------
+# Previous Year
+# -----------------------------
+previous_year = yoy_year - 1
+
+# -----------------------------
+# Get data
+# -----------------------------
+current_df = df[df["Year"] == yoy_year]
+
+previous_df = df[df["Year"] == previous_year]
+
+# -----------------------------
+# Merge
+# -----------------------------
+growth_df = current_df.merge(
+    previous_df,
+    on="Formula",
+    suffixes=("_current", "_previous"),
+    how="outer"
+)
+
+
+# -----------------------------
+# Replacing Missing Value
+# -----------------------------
+growth_df = growth_df.fillna(0)
+
+
+# -----------------------------
+# Calculated Growth
+# -----------------------------
+if growth_metric == "Import Volume":
+
+    growth_df["Growth (%)"] = np.where(
+        growth_df["Import_Volume_TON_previous"] > 0,
+        (
+            (growth_df["Import_Volume_TON_current"]
+            - growth_df["Import_Volume_TON_previous"])
+            / growth_df["Import_Volume_TON_previous"]
+            * 100
+        ),
+        np.nan
+    )
+
+else:
+
+    growth_df["Growth (%)"] = np.where(
+        growth_df["Import_Value_THB_previous"] > 0,
+        (
+            (growth_df["Import_Value_THB_current"]
+            - growth_df["Import_Value_THB_previous"])
+            / growth_df["Import_Value_THB_previous"]
+            * 100
+        ),
+        np.nan
+    )
+
+# ---------------------------------------------------
+# Filter out very small formulas (ADD THIS HERE)
+# ---------------------------------------------------
+growth_df = growth_df[
+    growth_df["Import_Volume_TON_previous"] >= 1000
+]
+
+# -----------------------------
+# Sort
+# -----------------------------
+growth_df = growth_df.sort_values(
+    "Growth (%)",
+    ascending=False
+)
+
+# -----------------------------
+# Charts
+# -----------------------------
+left, right = st.columns(2)
+
+with left:
+
+    fig_growth = px.bar(
+        growth_df.head(10),
+        x="Growth (%)",
+        y="Formula",
+        orientation="h",
+        title=f"Top 10 Growth ({previous_year} → {yoy_year})",
+        text="Growth (%)"
+    )
+
+    fig_growth.update_layout(
+        height=600,
+        yaxis=dict(autorange="reversed")
+    )
+
+    fig_growth.update_traces(
+        texttemplate="%{text:.1f}%",
+        hovertemplate="<b>%{y}</b><br>%{x:.2f}%<extra></extra>"
+    )
+
+    st.plotly_chart(
+        fig_growth,
+        use_container_width=True
+    )
+
+
+with right:
+
+    fig_decline = px.bar(
+        growth_df.tail(10),
+        x="Growth (%)",
+        y="Formula",
+        orientation="h",
+        title=f"Top 10 Decline ({previous_year} → {yoy_year})",
+        text="Growth (%)"
+    )
+
+    fig_decline.update_layout(
+        height=600
+    )
+
+    fig_decline.update_traces(
+        texttemplate="%{text:.1f}%",
+        hovertemplate="<b>%{y}</b><br>%{x:.2f}%<extra></extra>"
+    )
+
+    st.plotly_chart(
+        fig_decline,
+        use_container_width=True
+    )
+
+
+# -----------------------------
+# Table
+# -----------------------------
+
+st.subheader("Growth Table")
+
+show_table = growth_df[
+    [
+        "Formula",
+        "Growth (%)"
+    ]
+].copy()
+
+show_table["Growth (%)"] = show_table["Growth (%)"].round(2)
+
+st.dataframe(
+    show_table,
+    use_container_width=True,
+    hide_index=True
+)
