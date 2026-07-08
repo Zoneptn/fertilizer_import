@@ -196,3 +196,88 @@ st.dataframe(
     volume_table.style.format("{:,.0f}"),
     use_container_width=True
 )
+
+st.divider()
+st.header("🏆 Top Imported Fertilizer Formulas")
+
+
+col1, col2 = st.columns(2)
+
+with col1:
+    selected_year = st.selectbox(
+        "Select Year",
+        sorted(df["Year"].unique(), reverse=True)
+    )
+
+with col2:
+    top_n = st.slider(
+        "Top N",
+        min_value=5,
+        max_value=20,
+        value=10
+    )
+
+top_df = df[df["Year"] == selected_year]
+
+left, right = st.columns(2)
+
+top_volume = (
+    top_df
+    .sort_values("Import_Volume_TON", ascending=False)
+    .head(top_n)
+)
+
+with left:
+
+    fig_volume = px.bar(
+        top_volume,
+        x="Import_Volume_TON",
+        y="Formula",
+        orientation="h",
+        text="Import_Volume_TON",
+        title=f"Top {top_n} by Import Volume"
+    )
+
+    fig_volume.update_layout(
+        yaxis=dict(categoryorder="total ascending"),
+        height=600
+    )
+
+    fig_volume.update_traces(
+        texttemplate="%{text:,.0f}",
+        hovertemplate="<b>%{y}</b><br>Volume: %{x:,.0f} TON<extra></extra>"
+    )
+
+    st.plotly_chart(fig_volume, use_container_width=True)
+
+
+top_value = (
+    top_df
+    .sort_values("Import_Value_THB", ascending=False)
+    .head(top_n)
+)
+
+with right:
+
+    fig_value = px.bar(
+        top_value,
+        x="Import_Value_THB",
+        y="Formula",
+        orientation="h",
+        text="Import_Value_THB",
+        title=f"Top {top_n} by Import Value"
+    )
+
+    fig_value.update_layout(
+        yaxis=dict(categoryorder="total ascending"),
+        height=600
+    )
+
+    fig_value.update_traces(
+        texttemplate="%{text:,.0f}",
+        hovertemplate="<b>%{y}</b><br>Value: %{x:,.0f} THB<extra></extra>"
+    )
+
+    st.plotly_chart(fig_value, use_container_width=True)
+
+
