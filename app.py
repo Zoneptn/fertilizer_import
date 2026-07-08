@@ -58,6 +58,9 @@ all_years = pd.DataFrame({
 })
 
 plot_df = all_years.merge(filtered, on="Year", how="left")
+plot_df["Import_Volume_TON"] = plot_df["Import_Volume_TON"].fillna(0)
+plot_df["Import_Value_THB"] = plot_df["Import_Value_THB"].fillna(0)
+plot_df["AVG_price_THB_per_TON"] = plot_df["AVG_price_THB_per_TON"].fillna(0)
 
 # -----------------------------
 # Summary
