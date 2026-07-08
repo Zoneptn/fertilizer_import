@@ -286,4 +286,5 @@ with right:
 
 
 st.write(df["Formula"].head(10))
+st.write(df.columns)
 
