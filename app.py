@@ -529,6 +529,8 @@ with left:
         hovertemplate="<b>%{y}</b><br>%{x:.2f}%<extra></extra>"
     )
 
+    fig_growth.update_yaxes(type="category")
+
     st.plotly_chart(
         fig_growth,
         use_container_width=True
@@ -554,6 +556,8 @@ with right:
         texttemplate="%{text:.1f}%",
         hovertemplate="<b>%{y}</b><br>%{x:.2f}%<extra></extra>"
     )
+    
+    fig_decline.update_yaxes(type="category")
 
     st.plotly_chart(
         fig_decline,
