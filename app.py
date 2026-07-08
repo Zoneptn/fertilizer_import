@@ -112,7 +112,7 @@ st.divider()
 # Volume Trend
 # =============================
 fig_volume = px.line(
-    filtered,
+    plot_df,
     x="Year",
     y="Import_Volume_TON",
     markers=True,
@@ -137,7 +137,7 @@ st.plotly_chart(fig_volume, use_container_width=True)
 # Import Value Trend
 # =============================
 fig_value = px.line(
-    filtered,
+    plot_df,
     x="Year",
     y="Import_Value_THB",
     markers=True,
@@ -161,7 +161,7 @@ st.plotly_chart(fig_value, use_container_width=True)
 # Average Price Trend
 # =============================
 fig_price = px.line(
-    filtered,
+    plot_df,
     x="Year",
     y="AVG_price_THB_per_TON",
     markers=True,
