@@ -222,12 +222,14 @@ analysis_type = st.radio(
 col1, col2 = st.columns(2)
 
 with col1:
-    selected_year = st.selectbox(
-        "Select Year",
-        sorted(df["Year"].unique(), reverse=True)
+
+    analysis_period = st.selectbox(
+        "Analysis Period",
+        ["All Years"] + sorted(df["Year"].unique(), reverse=True)
     )
 
 with col2:
+
     top_n = st.slider(
         "Top N",
         min_value=5,
@@ -238,11 +240,7 @@ with col2:
 # -----------------------------
 # Filter by Year
 # -----------------------------
-if analysis_type == "Selected Year":
-
-    top_df = df[df["Year"] == selected_year].copy()
-
-else:
+if analysis_period == "All Years":
 
     top_df = (
         df.groupby("Formula", as_index=False)
@@ -251,6 +249,10 @@ else:
             "Import_Value_THB": "sum"
         })
     )
+
+else:
+
+    top_df = df[df["Year"] == analysis_period].copy()
 
 # Make sure Formula is text
 top_df["Formula"] = top_df["Formula"].astype(str)
@@ -286,7 +288,7 @@ with left:
         x="Import_Volume_TON",
         y="Formula",
         orientation="h",
-        title=f"Top {top_n} Import Volume"
+        title=f"Top {top_n} Import Volume ({analysis_period})"
     )
 
     fig_top_volume.update_layout(
@@ -315,7 +317,7 @@ with right:
         x="Import_Value_THB",
         y="Formula",
         orientation="h",
-        title=f"Top {top_n} Import Value"
+        title=f"Top {top_n} Import Value ({analysis_period})"
     )
 
     fig_top_value.update_layout(
