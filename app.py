@@ -285,6 +285,5 @@ with right:
     st.plotly_chart(fig_value, use_container_width=True)
 
 
-st.write(df["Formula"].head(10))
-st.write(df.columns)
+st.write(top_volume[["Formula", "Import_Volume_TON"]])
 
