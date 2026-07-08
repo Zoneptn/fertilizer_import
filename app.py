@@ -426,9 +426,13 @@ with col1:
 with col2:
 
     growth_metric = st.selectbox(
-        "Metric",
-        ["Import Volume", "Import Value"]
-    )
+    "Metric",
+    [
+        "Import Volume",
+        "Import Value",
+        "Average Price per TON"
+    ]
+)
 
 # -----------------------------
 # Previous Year
@@ -475,7 +479,7 @@ if growth_metric == "Import Volume":
         np.nan
     )
 
-else:
+elif growth_metric == "Import Value":
 
     growth_df["Growth (%)"] = np.where(
         growth_df["Import_Value_THB_previous"] > 0,
@@ -483,6 +487,19 @@ else:
             (growth_df["Import_Value_THB_current"]
             - growth_df["Import_Value_THB_previous"])
             / growth_df["Import_Value_THB_previous"]
+            * 100
+        ),
+        np.nan
+    )
+
+else:
+
+    growth_df["Growth (%)"] = np.where(
+        growth_df["AVG_price_THB_per_TON_previous"] > 0,
+        (
+            (growth_df["AVG_price_THB_per_TON_current"]
+            - growth_df["AVG_price_THB_per_TON_previous"])
+            / growth_df["AVG_price_THB_per_TON_previous"]
             * 100
         ),
         np.nan
