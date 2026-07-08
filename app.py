@@ -244,7 +244,6 @@ with left:
         x="Import_Volume_TON",
         y="Formula",
         orientation="h",
-        text="Import_Volume_TON",
         title=f"Top {top_n} by Import Volume"
     )
 
@@ -276,7 +275,6 @@ with right:
         x="Import_Value_THB",
         y="Formula",
         orientation="h",
-        text="Import_Value_THB",
         title=f"Top {top_n} by Import Value"
     )
 
