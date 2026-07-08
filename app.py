@@ -140,7 +140,7 @@ st.plotly_chart(fig_value, use_container_width=True)
 # Average Price Trend
 # =============================
 fig_price = px.line(
-    filtered,,
+    filtered,
     x="Year",
     y="AVG_price_THB_per_TON",
     markers=True,
