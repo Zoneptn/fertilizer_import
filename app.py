@@ -42,7 +42,7 @@ st.sidebar.header("Filter")
 
 formula_list = sorted(df["Formula"].unique())
 
-selected_formula = st.sidebar.multiselect(
+selected_formulas = st.sidebar.multiselect(
     "Select Formula",
     formula_list,
     default = [formula_list[0]]
@@ -57,15 +57,8 @@ if len(selected_formulas) >5:
 # -----------------------------
 filtered = df[df["Formula"].isin(selected_formulas)]
 
-# Create complete year range for the selected formula
-all_years = pd.DataFrame({
-    "Year": range(filtered["Year"].min(), filtered["Year"].max() + 1)
-})
 
-plot_df = all_years.merge(filtered, on="Year", how="left")
-plot_df["Import_Volume_TON"] = plot_df["Import_Volume_TON"].fillna(0)
-plot_df["Import_Value_THB"] = plot_df["Import_Value_THB"].fillna(0)
-plot_df["AVG_price_THB_per_TON"] = plot_df["AVG_price_THB_per_TON"].fillna(0)
+
 
 # -----------------------------
 # Summary
@@ -98,7 +91,7 @@ st.divider()
 # Volume Trend
 # =============================
 fig_volume = px.line(
-    plot_df,
+    filtered,
     x="Year",
     y="Import_Volume_TON",
     markers=True,
@@ -123,7 +116,7 @@ st.plotly_chart(fig_volume, use_container_width=True)
 # Import Value Trend
 # =============================
 fig_value = px.line(
-    plot_df,
+    filtered,,
     x="Year",
     y="Import_Value_THB",
     markers=True,
@@ -147,11 +140,12 @@ st.plotly_chart(fig_value, use_container_width=True)
 # Average Price Trend
 # =============================
 fig_price = px.line(
-    plot_df,
+    filtered,,
     x="Year",
     y="AVG_price_THB_per_TON",
     markers=True,
-    title="Average Price Comparision"
+    title="Average Price Comparision",
+    color = "Formula"
 )
 
 fig_price.update_layout(
