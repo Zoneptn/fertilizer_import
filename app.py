@@ -293,5 +293,8 @@ with right:
     st.plotly_chart(fig_value, use_container_width=True)
 
 
+
 st.write(top_volume.dtypes)
+st.write(top_volume[["Formula", "Import_Volume_TON"]])
+st.write(top_value[["Formula", "Import_Value_THB"]])
 
