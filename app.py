@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import numpy as np
+
 
 # -----------------------------
 # Page Config
@@ -32,6 +34,7 @@ def load_data():
 
 df = load_data()
 
+
 # -----------------------------
 # Sidebar
 # -----------------------------
@@ -48,6 +51,13 @@ selected_formula = st.sidebar.selectbox(
 # Filter Data
 # -----------------------------
 filtered = df[df["Formula"] == selected_formula]
+
+# Create complete year range for the selected formula
+all_years = pd.DataFrame({
+    "Year": range(filtered["Year"].min(), filtered["Year"].max() + 1)
+})
+
+plot_df = all_years.merge(filtered, on="Year", how="left")
 
 # -----------------------------
 # Summary
@@ -80,7 +90,7 @@ st.divider()
 # Volume Trend
 # =============================
 fig_volume = px.line(
-    filtered,
+    plot_df,
     x="Year",
     y="Import_Volume_TON",
     markers=True,
@@ -103,7 +113,7 @@ st.plotly_chart(fig_volume, use_container_width=True)
 # Import Value Trend
 # =============================
 fig_value = px.line(
-    filtered,
+    plot_df,
     x="Year",
     y="Import_Value_THB",
     markers=True,
@@ -126,7 +136,7 @@ st.plotly_chart(fig_value, use_container_width=True)
 # Average Price Trend
 # =============================
 fig_price = px.line(
-    filtered,
+    plot_df,
     x="Year",
     y="AVG_price_THB_per_TON",
     markers=True,
@@ -140,7 +150,6 @@ fig_price.update_layout(
 )
 
 fig_price.update_traces(
-    connnectgaps= False,
     hovertemplate="<b>Year:</b> %{x}<br><b>Price:</b> %{y:,.2f} THB / TON<extra></extra>"
 )
 
