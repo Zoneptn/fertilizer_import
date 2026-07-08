@@ -212,11 +212,6 @@ st.header("🏆 Top Imported Fertilizer Formulas")
 # -----------------------------
 # Controls
 # -----------------------------
-analysis_type = st.radio(
-    "Analysis",
-    ["All Years", "Selected Year"],
-    horizontal=True
-)
 
 
 col1, col2 = st.columns(2)
@@ -233,7 +228,7 @@ with col2:
     top_n = st.slider(
         "Top N",
         min_value=5,
-        max_value=20,
+        max_value=30,
         value=10
     )
 
