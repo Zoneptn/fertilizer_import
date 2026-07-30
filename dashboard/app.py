@@ -270,7 +270,7 @@ formula = st.selectbox(
 company_detail = (
     active_df[active_df["Formula"] == formula]
     .sort_values("Company_Name")
-    [["Company_Name", "Trade_Name", "Register_Number", "Expiry_Date"]]
+    [["Register_Number","Company_Name", "Trade_Name", "Fertilizer_Type", "Expiry_Date"]]
     .drop_duplicates()
 )
 company_detail["Expiry_Date"] = company_detail["Expiry_Date"].dt.strftime("%d/%m/%Y")
