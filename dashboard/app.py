@@ -252,21 +252,6 @@ formula_company = (
              .sort_values("Number_of_Companies", ascending=False)
 )
 
-# Bar chart
-fig = px.bar(
-    formula_company,
-    x="Formula",
-    y="Number_of_Companies",
-    text="Number_of_Companies"
-)
-
-fig.update_layout(
-    xaxis_title="Formula",
-    yaxis_title="Number of Companies",
-    height=500
-)
-
-st.plotly_chart(fig, use_container_width=True)
 
 # Summary table
 st.dataframe(formula_company, hide_index=True, use_container_width=True)
@@ -288,6 +273,8 @@ company_detail = (
     [["Company_Name", "Trade_Name", "Register_Number", "Expiry_Date"]]
     .drop_duplicates()
 )
+company_detail["Expiry_Date"] = company_detail["Expiry_Date"].dt.strftime("%d/%m/%Y")
+
 
 st.metric(
     "Active Companies",
