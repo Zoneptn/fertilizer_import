@@ -50,6 +50,8 @@ def load_data():
         st.stop()
 
     # Load files
+    st.write("Import file:", IMPORT_FILE)
+    st.write("Registration file:", REGIS_FILE)
     df = pd.read_excel(IMPORT_FILE)
     regis_df = pd.read_excel(REGIS_FILE)
 
