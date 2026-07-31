@@ -281,10 +281,19 @@ company_detail = (
 company_detail["Expiry_Date"] = company_detail["Expiry_Date"].dt.strftime("%d/%m/%Y")
 
 
-st.metric(
-    "Active Companies",
-    company_detail["Company_Name"].nunique()
-)
+col1, col2 = st.columns(2)
+
+with col1:
+    st.metric(
+        "Active Companies",
+        company_detail["Company_Name"].nunique()
+    )
+
+with col2:
+    st.metric(
+        "Active Registrations",
+        company_detail["Register_Number"].nunique()
+    )
 
 st.dataframe(
     company_detail,
