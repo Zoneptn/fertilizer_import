@@ -7,6 +7,7 @@ import numpy as np
 # -----------------------------
 # Page Config
 # -----------------------------
+
 st.set_page_config(
     page_title="Thailand Fertilizer Import Dashboard",
     page_icon="🌱",
@@ -14,6 +15,9 @@ st.set_page_config(
 )
 
 st.title("🌱 Thailand Fertilizer Import Dashboard")
+if st.button("🔄 Refresh Data"):
+    st.cache_data.clear()
+    st.rerun()
 
 # -----------------------------
 # Load Data
@@ -50,6 +54,8 @@ def load_data():
         st.stop()
 
     # Load files
+    st.write("Import file:", IMPORT_FILE)
+    st.write("Registration file:", REGIS_FILE)
     df = pd.read_excel(IMPORT_FILE)
     regis_df = pd.read_excel(REGIS_FILE)
 
