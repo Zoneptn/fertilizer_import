@@ -259,7 +259,7 @@ st.dataframe(formula_company, hide_index=True, use_container_width=True)
 # ----------------------------------------------------------
 # Company List
 # ----------------------------------------------------------
-
+st.write(active_df.columns.tolist())
 st.subheader("Company List")
 
 formula = st.selectbox(
