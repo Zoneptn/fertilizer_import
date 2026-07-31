@@ -285,15 +285,16 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.metric(
-        "Active Companies",
-        company_detail["Company_Name"].nunique()
+        "Active Registrations",
+        company_detail["Register_Number"].nunique()
     )
 
 with col2:
     st.metric(
-        "Active Registrations",
-        company_detail["Register_Number"].nunique()
+        "Active Companies",
+        company_detail["Company_Name"].nunique()
     )
+
 
 st.dataframe(
     company_detail,
